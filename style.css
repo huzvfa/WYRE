@@ -1,36 +1,52 @@
-/* Cinematic Base */
+/* WYRE PREMIUM CINEMATIC SKIN */
 :root {
     --accent: #00d4ff;
+    --bg: #050505;
     --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.1);
 }
 
 body {
-    background: radial-gradient(circle at center, #111, #000);
-    color: white;
-    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--bg);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(0, 212, 255, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(0, 212, 255, 0.05) 0px, transparent 50%);
+    color: #fff;
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0;
     display: flex;
     justify-content: center;
     min-height: 100vh;
-    margin: 0;
 }
 
 .container {
-    width: 90%;
-    max-width: 800px;
+    width: 100%;
+    max-width: 900px;
+    padding: 80px 20px;
     text-align: center;
-    padding-top: 50px;
 }
 
-/* Glossy Search Bar */
+h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+    margin-bottom: 10px;
+    background: linear-gradient(to bottom, #fff, #666);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* The Glossy Search Engine */
 .search-wrapper {
-    display: flex;
+    position: relative;
     background: var(--glass);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 100px;
-    margin-bottom: 40px;
-    box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+    backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 20px;
+    display: flex;
+    margin-top: 40px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 input {
@@ -39,60 +55,64 @@ input {
     border: none;
     color: white;
     font-size: 1.1rem;
-    padding-left: 20px;
+    padding: 15px 25px;
     outline: none;
 }
 
-button {
-    background: white;
-    color: black;
+button.track-btn {
+    background: #fff;
+    color: #000;
     border: none;
-    padding: 12px 30px;
-    border-radius: 50px;
-    font-weight: 800;
+    padding: 0 40px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-button:hover {
-    transform: scale(1.1);
+button.track-btn:hover {
     background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
 }
 
 /* Results List View */
-.product-card {
+.result-card {
     display: flex;
-    align-items: center;
     background: var(--glass);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    margin-bottom: 15px;
-    padding: 20px;
-    border-radius: 20px;
+    border: 1px solid var(--border);
+    margin-top: 20px;
+    border-radius: 24px;
+    padding: 24px;
     text-align: left;
-    transition: 0.3s;
+    align-items: center;
+    animation: reveal 0.6s ease-out forwards;
 }
 
-.product-card:hover { background: rgba(255,255,255,0.08); }
+@keyframes reveal {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
 .product-img {
-    width: 100px;
-    height: 100px;
-    background: #222;
-    border-radius: 12px;
-    margin-right: 20px;
+    width: 120px;
+    height: 120px;
+    background: #111;
+    border-radius: 16px;
+    margin-right: 25px;
+    border: 1px solid var(--border);
 }
 
-.product-info { flex: 1; }
-
-.price-tag {
-    font-size: 1.4rem;
-    font-weight: bold;
+.price-main {
+    font-size: 1.8rem;
+    font-weight: 800;
     color: var(--accent);
 }
 
-.original-price {
+.price-compare {
+    color: #ff4d4d;
     text-decoration: line-through;
-    color: #666;
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-left: 10px;
 }
