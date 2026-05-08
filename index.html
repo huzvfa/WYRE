@@ -3,30 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WYRE | Cinematic AI</title>
-    <!-- Adding ?v=1.1 forces the browser to download the NEW version -->
-    <link rel="stylesheet" href="style.css?v=1.1">
+    <title>WYRE | AI Alternative Sourcing</title>
+    <style>
+        /* --- PREMIUM CINEMATIC INTERFACE --- */
+        :root {
+            --accent: #00d4ff;
+            --bg: #050505;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 212, 255, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(0, 212, 255, 0.08) 0px, transparent 50%);
+            color: #fff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 900;
+            letter-spacing: -3px;
+            margin: 0;
+            background: linear-gradient(to bottom, #fff 30%, #444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        p.tagline {
+            color: #888;
+            letter-spacing: 2px;
+            margin-bottom: 50px;
+            font-size: 0.9rem;
+        }
+
+        /* --- GLOSSY SEARCH ENGINE --- */
+        .search-wrapper {
+            position: relative;
+            background: var(--glass);
+            backdrop-filter: blur(30px) saturate(150%);
+            border: 1px solid var(--border);
+            padding: 8px;
+            border-radius: 24px;
+            display: flex;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .search-wrapper:focus-within {
+            border-color: var(--accent);
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+        }
+
+        input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            padding: 15px 25px;
+            outline: none;
+        }
+
+        .track-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 0 35px;
+            border-radius: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .track-btn:hover {
+            background: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        /* --- LIST VIEW RESULTS --- */
+        #results {
+            margin-top: 60px;
+        }
+
+        .result-card {
+            display: flex;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            border-radius: 24px;
+            padding: 25px;
+            text-align: left;
+            align-items: center;
+            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-img {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #111, #222);
+            border-radius: 18px;
+            margin-right: 25px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .price-main {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .price-compare {
+            color: #ff4d4d;
+            text-decoration: line-through;
+            font-size: 1rem;
+            margin-left: 10px;
+            opacity: 0.8;
+        }
+
+        /* --- GLASS SHARD ANIMATION --- */
+        .shard {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.6);
+            width: 12px;
+            height: 1px;
+            pointer-events: none;
+            z-index: 9999;
+        }
+    </style>
 </head>
 <body>
-    <div id="glass-container"></div> <!-- For broken glass animation -->
-    
-    <main class="hero">
-        <h1 class="logo">WYRE</h1>
-        <p class="tagline">Find the alternative. Save the difference.</p>
-        
-        <div class="search-box">
-            <input type="text" id="productLink" placeholder="Paste product link here...">
-            <button onclick="findAlternatives()">TRACK</button>
+
+    <div class="container">
+        <h1>WYRE</h1>
+        <p class="tagline">AI-DRIVEN ALTERNATIVE TRACKER</p>
+
+        <div class="search-wrapper">
+            <input type="text" id="urlInput" placeholder="Paste product link here...">
+            <button class="track-btn" onclick="processSearch()">TRACK</button>
         </div>
 
-        <div id="filter-bar" class="hidden">
-            <button onclick="sortResults('price')">Lowest Price</button>
-            <button onclick="sortResults('match')">Best Match</button>
-        </div>
+        <div id="results"></div>
+    </div>
 
-        <section id="results-list"></section>
-    </main>
+    <script>
+        /* --- THE ENGINE --- */
+        function processSearch() {
+            const input = document.getElementById('urlInput').value;
+            const container = document.getElementById('results');
 
-    <script src="script.js"></script>
+            // 1. Broken Glass Visual
+            shatter();
+
+            if (!input || input.trim() === "") {
+                return; // Silently wait for input
+            }
+
+            // 2. Cinematic Loading
+            container.innerHTML = `
+                <div style="padding:50px; color:var(--accent); font-weight:bold; letter-spacing:4px; animation: pulse 1s infinite;">
+                    BYPASSING PAYWALLS & TRACKING ALTERNATIVES...
+                </div>
+            `;
+
+            // 3. Simulated AI Sourcing (2% commission logic included)
+            setTimeout(() => {
+                const resultsData = [
+                    {
+                        name: "Premium Alternative Alpha",
+                        price: "42.99",
+                        original: "89.00",
+                        desc: "98% Spec Match. Sourced via Real-time AI engine.",
+                        icon: "💎",
+                        exact: true
+                    },
+                    {
+                        name: "Value Choice Beta",
+                        price: "29.50",
+                        original: "89.00",
+                        desc: "Budget alternative. Different brand, same utility.",
+                        icon: "⚡",
+                        exact: false
+                    }
+                ];
+
+                container.innerHTML = resultsData.map(item => `
+                    <div class="result-card">
+                        <div class="product-img">${item.icon}</div>
+                        <div style="flex:1">
+                            <h3 style="margin:0">${item.name} ${item.exact ? '' : '<span title="Close match" style="cursor:help; font-size:1rem;">ⓘ</span>'}</h3>
+                            <p style="color:#777; margin:8px 0; font-size:0.9rem;">${item.desc}</p>
+                            <div>
+                                <span class="price-main">$${item.price}</span>
+                                <span class="price-compare">was $${item.original}</span>
+                            </div>
+                        </div>
+                        <button class="track-btn" style="height:50px; font-size:0.8rem;" onclick="redirectToDeal('${item.name}')">
+                            GET DEAL
+                        </button>
+                    </div>
+                `).join('');
+            }, 1800);
+        }
+
+        function redirectToDeal(productName) {
+            // Your 2% commission link logic
+            const affiliateID = "wyre-2026";
+            const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(productName)}+buy+now&ref=${affiliateID}`;
+            window.open(searchUrl, '_blank');
+        }
+
+        /* --- VISUAL EFFECTS --- */
+        function shatter() {
+            for (let i = 0; i < 15; i++) {
+                const s = document.createElement('div');
+                s.className = 'shard';
+                s.style.left = '50%';
+                s.style.top = '50%';
+                document.body.appendChild(s);
+
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 200 + Math.random() * 300;
+
+                const anim = s.animate([
+                    { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+                    { transform: `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px) rotate(450deg)`, opacity: 0 }
+                ], { duration: 800, easing: 'ease-out' });
+
+                anim.onfinish = () => s.remove();
+            }
+        }
+    </script>
 </body>
 </html>
