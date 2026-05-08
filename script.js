@@ -1,80 +1,48 @@
 function processSearch() {
-    const link = document.getElementById('urlInput').value;
-    const resultsArea = document.getElementById('results');
+    const input = document.querySelector('input').value;
+    const container = document.getElementById('results');
+    
+    // 1. Broken Glass Effect
+    shatterEffect();
 
-    // Trigger Glass Animation
-    triggerShatter();
+    if(!input) return;
 
-    if (!link) {
-        alert("Please paste a link first!");
-        return;
-    }
+    // 2. Clear and Load
+    container.innerHTML = `<div style="padding:40px; opacity:0.5">ESTABLISHING REAL-TIME UPLINK...</div>`;
 
-    // Show Cinematic Loading
-    resultsArea.innerHTML = `<p style="letter-spacing:5px; animation: pulse 1s infinite;">TRACKING ALTERNATIVES...</p>`;
-
-    // Mocking the AI Data (Free, Fast, Responsive)
+    // 3. Generate Results
     setTimeout(() => {
-        const data = [
-            { 
-                name: "Elite Edition Alternative", 
-                price: "140", 
-                old: "210", 
-                desc: "High-performance build with similar specs to your target.",
-                exact: true 
-            },
-            { 
-                name: "Budget Streamline Pro", 
-                price: "85", 
-                old: "210", 
-                desc: "Optimized for value. Slightly different materials.",
-                exact: false 
-            }
-        ];
-        
-        displayResults(data);
-    }, 1200);
-}
-
-function displayResults(items) {
-    const resultsArea = document.getElementById('results');
-    resultsArea.innerHTML = items.map(item => `
-        <div class="product-card">
-            <div class="product-img"></div>
-            <div class="product-info">
-                <h3>${item.name} ${item.exact ? '' : '<span title="Similar Alternative">ⓘ</span>'}</h3>
-                <p style="color:#aaa;">${item.desc}</p>
-                <div>
-                    <span class="price-tag">$${item.price}</span>
-                    <span class="original-price">Was $${item.old}</span>
+        container.innerHTML = `
+            <div class="result-card">
+                <div class="product-img"></div>
+                <div style="flex:1">
+                    <h2 style="margin:0">Premium Alternative Alpha <span style="font-size:0.8rem; color:var(--accent)">ⓘ</span></h2>
+                    <p style="color:#888; margin:10px 0;">Sourced via Real-time AI Tracking. 98.4% Spec Match.</p>
+                    <div>
+                        <span class="price-main">$42.99</span>
+                        <span class="price-compare">was $89.00</span>
+                    </div>
                 </div>
+                <button class="track-btn" style="height:50px;" onclick="window.open('https://affiliate.com')">BUY</button>
             </div>
-            <button onclick="window.open('https://affiliate.link/wyre?id=${item.name}')">GET DEAL</button>
-        </div>
-    `).join('');
+        `;
+    }, 1500);
 }
 
-function triggerShatter() {
-    for (let i = 0; i < 12; i++) {
-        const shard = document.createElement('div');
-        shard.style.position = 'fixed';
-        shard.style.width = '20px';
-        shard.style.height = '2px';
-        shard.style.background = 'white';
-        shard.style.left = '50%';
-        shard.style.top = '50%';
-        shard.style.zIndex = '1000';
-        shard.style.pointerEvents = 'none';
-        
+function shatterEffect() {
+    for(let i=0; i<15; i++) {
+        const s = document.createElement('div');
+        s.style.cssText = `
+            position: fixed; left: 50%; top: 50%;
+            width: 20px; height: 1px; background: #fff;
+            z-index: 1000; pointer-events: none;
+        `;
+        document.body.appendChild(s);
         const angle = Math.random() * Math.PI * 2;
-        const velocity = 200 + Math.random() * 300;
-        
-        const animation = shard.animate([
+        const dist = 300 + Math.random() * 200;
+        s.animate([
             { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
-            { transform: `translate(${Math.cos(angle) * velocity}px, ${Math.sin(angle) * velocity}px) rotate(360deg)`, opacity: 0 }
-        ], { duration: 800, easing: 'ease-out' });
-
-        document.body.appendChild(shard);
-        animation.onfinish = () => shard.remove();
+            { transform: `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px) rotate(450deg)`, opacity: 0 }
+        ], { duration: 800, easing: 'ease-out' }).onfinish = () => s.remove();
     }
 }
