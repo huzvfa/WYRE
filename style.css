@@ -1,60 +1,98 @@
+/* Cinematic Base */
+:root {
+    --accent: #00d4ff;
+    --glass: rgba(255, 255, 255, 0.03);
+}
+
 body {
-    background: #020202;
-    color: #fff;
-    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at center, #111, #000);
+    color: white;
+    font-family: 'Inter', -apple-system, sans-serif;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
     margin: 0;
-    overflow-x: hidden;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 10vh;
+    width: 90%;
+    max-width: 800px;
+    text-align: center;
+    padding-top: 50px;
 }
 
+/* Glossy Search Bar */
 .search-wrapper {
-    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    background: var(--glass);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    border-radius: 12px;
-    display: flex;
-    width: 80%;
-    max-width: 600px;
+    padding: 15px;
+    border-radius: 100px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.5);
 }
 
 input {
+    flex: 1;
     background: transparent;
     border: none;
     color: white;
-    flex: 1;
-    padding: 10px;
+    font-size: 1.1rem;
+    padding-left: 20px;
     outline: none;
 }
 
 button {
-    background: #fff;
+    background: white;
+    color: black;
     border: none;
-    padding: 10px 25px;
-    border-radius: 8px;
-    font-weight: bold;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 800;
     cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+button:hover {
+    transform: scale(1.1);
+    background: var(--accent);
+}
+
+/* Results List View */
+.product-card {
+    display: flex;
+    align-items: center;
+    background: var(--glass);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: left;
     transition: 0.3s;
 }
 
-button:active { transform: scale(0.9); }
+.product-card:hover { background: rgba(255,255,255,0.08); }
 
-/* Broken Glass Shard Style */
-.shard {
-    position: fixed;
-    background: rgba(255, 255, 255, 0.2);
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    pointer-events: none;
-    z-index: 999;
-    animation: flyOut 0.6s ease-out forwards;
+.product-img {
+    width: 100px;
+    height: 100px;
+    background: #222;
+    border-radius: 12px;
+    margin-right: 20px;
 }
 
-@keyframes flyOut {
-    to { transform: translate(var(--x), var(--y)) rotate(360deg); opacity: 0; }
+.product-info { flex: 1; }
+
+.price-tag {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #666;
+    font-size: 0.9rem;
+    margin-left: 10px;
 }
