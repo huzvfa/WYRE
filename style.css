@@ -1,0 +1,60 @@
+body {
+    background: #020202;
+    color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10vh;
+}
+
+.search-wrapper {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    width: 80%;
+    max-width: 600px;
+}
+
+input {
+    background: transparent;
+    border: none;
+    color: white;
+    flex: 1;
+    padding: 10px;
+    outline: none;
+}
+
+button {
+    background: #fff;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:active { transform: scale(0.9); }
+
+/* Broken Glass Shard Style */
+.shard {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.2);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    pointer-events: none;
+    z-index: 999;
+    animation: flyOut 0.6s ease-out forwards;
+}
+
+@keyframes flyOut {
+    to { transform: translate(var(--x), var(--y)) rotate(360deg); opacity: 0; }
+}
