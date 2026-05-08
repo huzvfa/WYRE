@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WYRE | Cinematic AI Sourcing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="glass-container"></div> <!-- For broken glass animation -->
+    
+    <main class="hero">
+        <h1 class="logo">WYRE</h1>
+        <p class="tagline">Find the alternative. Save the difference.</p>
+        
+        <div class="search-box">
+            <input type="text" id="productLink" placeholder="Paste product link here...">
+            <button onclick="findAlternatives()">TRACK</button>
+        </div>
+
+        <div id="filter-bar" class="hidden">
+            <button onclick="sortResults('price')">Lowest Price</button>
+            <button onclick="sortResults('match')">Best Match</button>
+        </div>
+
+        <section id="results-list"></section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
